@@ -5,7 +5,7 @@ To build an run nacos coredns plugin, the OS must be Linux or Mac. And also, gol
 
 ### Build
 ```
-git clone git@gitlab.alibaba-inc.com:middleware/nacos-coredns-plugin.git 
+git clone git clone git@github.com:nacos-group/nacos-coredns-plugin.git 
 cp nacos-coredns-plugin/bin/build.sh ~/
 cd ~/
 sh build.sh
@@ -29,9 +29,9 @@ To run nacos coredns plugin, you need a configuration file. A possible file may 
 * Firstly, you need to deploy nacos server. [Here](https://github.com/alibaba/nacos)
 * Secondly, register service on nacos.
 * Then run ```$GOPATH/src/coredns/coredns -conf $path_to_corefile -dns.port $dns_port```
-![image](http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/middleware/nacos-coredns-plugin/5f231b0ad438d9fc62299a7d94e42cca/image.png)
+![image](https://cdn.nlark.com/lark/0/2018/png/7601/1542623914418-f529409b-c229-4ef9-aec3-b9c5df23c906.png)
 
 ### Test
 dig $nacos_service_name @127.0.0.1 -p $dns_port
 
-![image](http://git.cn-hangzhou.oss-cdn.aliyun-inc.com/uploads/middleware/nacos-coredns-plugin/464d59644bbb76c227a3900d8459bc9c/image.png)
+![image](https://cdn.nlark.com/lark/0/2018/png/7601/1542624023214-29cd9f71-0183-4231-b092-57535e8cfcfe.png)
