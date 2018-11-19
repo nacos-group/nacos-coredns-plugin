@@ -5,7 +5,7 @@ To build an run nacos coredns plugin, the OS must be Linux or Mac. And also, gol
 
 ### Build
 ```
-git clone git clone git@github.com:nacos-group/nacos-coredns-plugin.git 
+git clone git@github.com:nacos-group/nacos-coredns-plugin.git 
 cp nacos-coredns-plugin/bin/build.sh ~/
 cd ~/
 sh build.sh
