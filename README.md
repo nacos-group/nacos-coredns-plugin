@@ -1,7 +1,7 @@
-This project provides a **DNS-F** client based on [CoreDNS](https://coredns.io/), which can help export those registed services on Nacos as DNS domain. **DNS-F** cient is a dedicated agent process(side car) beside the application's process to foward the service discovery DNS domain query request to Nacos. 
+This project provides a **DNS-F** client based on [CoreDNS](https://coredns.io/), which can help export those registed services on Nacos as DNS domain. **DNS-F** client is a dedicated agent process(side car) beside the application's process to foward the service discovery DNS domain query request to Nacos. 
 
 ## Quic Start
-To build an run nacos coredns plugin, the OS must be Linux or Mac. And also, golang environments(GOPATH,GOROOT,GOHOME) must be configured correctly.
+To build and run nacos coredns plugin, the OS must be Linux or Mac. And also, golang environments(GOPATH,GOROOT,GOHOME) must be configured correctly.
 
 ### Build
 ```
