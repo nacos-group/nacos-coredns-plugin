@@ -16,19 +16,19 @@ package nacos
 import (
 	"github.com/miekg/dns"
 	"net"
-	"github.com/coredns/coredns/plugin/proxy"
 	"github.com/coredns/coredns/plugin"
 	"time"
 	"strconv"
 	"encoding/json"
-	"github.com/coredns/coredns/request"
+	"coredns/request"
 	"context"
+	"coredns/plugin/pkg/upstream"
 )
 
 type Nacos struct {
 	Next        plugin.Handler
 	Zones       []string
-	Proxy       proxy.Proxy
+	Proxy      	*upstream.Upstream
 	NacosClientImpl  *NacosClient
 	DNSCache    ConcurrentMap
 }
@@ -44,7 +44,7 @@ func (vs *Nacos) String() string {
 }
 
 // Lookup implements the ServiceBackend interface.
-func (e *Nacos) Lookup(state request.Request, name string, typ uint16) (*dns.Msg, error) {
+func (e *Nacos) Lookup(ctx context.Context, state request.Request, name string, typ uint16) (*dns.Msg, error) {
 	key := name + strconv.Itoa(state.Family())
 	msg, ok := e.DNSCache.Get(key)
 
@@ -52,7 +52,7 @@ func (e *Nacos) Lookup(state request.Request, name string, typ uint16) (*dns.Msg
 	if ok {
 		dnsCache := msg.(DnsCache)
 		if !dnsCache.Updated() {
-			msg1, err := e.Proxy.Lookup(state, name, typ)
+			msg1, err := e.Proxy.Lookup(ctx, state, name, typ)
 			if err == nil {
 				if len(msg1.Answer) > 0 {
 					dnsCache.Msg = msg1
@@ -71,7 +71,7 @@ func (e *Nacos) Lookup(state request.Request, name string, typ uint16) (*dns.Msg
 
 		return dnsCache.Msg, nil
 	} else {
-		msg1, err := e.Proxy.Lookup(state, name, typ)
+		msg1, err := e.Proxy.Lookup(ctx, state, name, typ)
 		if err == nil {
 			dnsCache := DnsCache{Msg: msg1, LastUpdateMills: time.Now().UnixNano() / 1000000}
 			e.DNSCache.Set(name, dnsCache)
@@ -125,7 +125,7 @@ func (vs *Nacos) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg)
 	}
 
 	if !vs.managed(name[:len(name)-1], clientIP) {
-		dnsMsg, _ := vs.Lookup(state, name, state.QType())
+		dnsMsg, _ := vs.Lookup(ctx, state, name, state.QType())
 		m.Answer = dnsMsg.Answer
 		m.Extra = dnsMsg.Extra
 

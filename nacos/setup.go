@@ -14,14 +14,14 @@
 package nacos
 
 import (
-	"github.com/mholt/caddy"
+	"github.com/caddyserver/caddy"
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/core/dnsserver"
 	"fmt"
 	"strings"
 	"strconv"
 	"github.com/coredns/coredns/plugin/pkg/parse"
-	"github.com/coredns/coredns/plugin/proxy"
+	"coredns/plugin/pkg/upstream"
 )
 
 func init() {
@@ -88,7 +88,7 @@ func NacosParse(c *caddy.Controller) (*Nacos, error) {
 						}
 					}
 					fmt.Println("upstreams: ", ups1)
-					nacosImpl.Proxy = proxy.NewLookup(ups1)
+					nacosImpl.Proxy = upstream.New()
 				case "cache_dir":
 					CachePath = c.RemainingArgs()[0]
 				case "log_path":
