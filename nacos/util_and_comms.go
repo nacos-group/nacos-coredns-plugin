@@ -14,25 +14,24 @@
 package nacos
 
 import (
-	"time"
-	"net"
-	"compress/gzip"
 	"bytes"
+	"compress/gzip"
 	"io/ioutil"
+	"net"
+	"time"
 )
 
 var (
-		DefaultCacheMillis = int64(5000)
-		Version = "Nacos-go-client:v0.1.0"
-		CachePath string
-		LogPath string
-		SEPERATOR = "@@"
-	    GZIP_MAGIC = []byte("\x1F\x8B")
-	    EnableReceivePush = true
-	    UDP_Port = -1
-	    SERVER_PORT = "8848"
-	)
-
+	DefaultCacheMillis = int64(5000)
+	Version            = "Nacos-DNS:v1.0.1"
+	CachePath          string
+	LogPath            string
+	SEPERATOR          = "@@"
+	GZIP_MAGIC         = []byte("\x1F\x8B")
+	EnableReceivePush  = true
+	UDP_Port           = -1
+	SERVER_PORT        = "8848"
+)
 
 func CurrentMillis() int64 {
 	return time.Now().UnixNano() / 1e6
