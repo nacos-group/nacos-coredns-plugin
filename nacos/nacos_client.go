@@ -14,18 +14,19 @@
 package nacos
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"os"
-	"time"
-	"reflect"
 	"path/filepath"
-	"strings"
-	"io/ioutil"
+	"reflect"
 	"strconv"
-	"github.com/cihub/seelog"
+	"strings"
 	"sync"
+	"time"
+
+	"github.com/cihub/seelog"
 )
 
 var (
@@ -33,15 +34,15 @@ var (
 	LogConfig         string
 )
 
-func init () {
+func init() {
 	initLog()
 }
 
 type NacosClient struct {
-	domainMap ConcurrentMap
-	udpServer UDPServer
+	domainMap     ConcurrentMap
+	udpServer     UDPServer
 	serverManager ServerManager
-	serverPort int
+	serverPort    int
 }
 
 type NacosClientError struct {
@@ -86,7 +87,7 @@ func mkdirIfNecessary(path string) {
 	if ok, _ := exists(path); !ok {
 		err := os.Mkdir(path, 0755)
 		if err != nil {
-			NacosClientLogger.Warn("can not cread dir: " + path, err)
+			NacosClientLogger.Warn("can not cread dir: "+path, err)
 		}
 	}
 }
@@ -127,7 +128,7 @@ func initLog() {
 	}
 }
 
-func  (nacosClient *NacosClient) asyncGetAllDomNAmes() {
+func (nacosClient *NacosClient) asyncGetAllDomNAmes() {
 	for {
 		time.Sleep(time.Duration(AllDoms.CacheSeconds) * time.Second)
 		nacosClient.getAllDomNames()
@@ -138,14 +139,13 @@ func (nacosClient *NacosClient) GetServerManager() (serverManager *ServerManager
 	return &nacosClient.serverManager
 }
 
-
 func (nacosClient *NacosClient) GetUdpServer() (us UDPServer) {
 	return nacosClient.udpServer
 }
 
-func  (nacosClient *NacosClient) getAllDomNames() {
+func (nacosClient *NacosClient) getAllDomNames() {
 	ip := nacosClient.serverManager.NextServer()
-	s := Get("http://" + ip  + ":" + strconv.Itoa(nacosClient.serverPort) + "/nacos/v1/ns/api/allDomNames", nil)
+	s := Get("http://"+ip+":"+strconv.Itoa(nacosClient.serverPort)+"/nacos/v1/ns/api/allDomNames", nil)
 
 	if s == "" {
 		return
@@ -156,8 +156,21 @@ func  (nacosClient *NacosClient) getAllDomNames() {
 	err := json.Unmarshal([]byte(s), &allName)
 
 	if err != nil {
-		NacosClientLogger.Error("failed to unmarshal json: " + s, err)
-		return
+		//compatible nacos over v1.2.x
+		var newAllName NewAllDomNames
+		err = json.Unmarshal([]byte(s), &newAllName)
+		if err != nil {
+			NacosClientLogger.Error("failed to unmarshal json: "+s, err)
+			return
+		}
+		var doms []string
+		for _, domMap := range newAllName.Doms {
+			for _, dom := range domMap {
+				doms = append(doms, dom)
+			}
+		}
+		allName.Doms = doms
+		allName.CacheMillis = newAllName.CacheMillis
 	}
 
 	tmpMap := make(map[string]bool)
@@ -169,7 +182,7 @@ func  (nacosClient *NacosClient) getAllDomNames() {
 	AllDoms.DLock.Lock()
 	AllDoms.Data = tmpMap
 
-	if allName.CacheMillis < 30 * 1000 {
+	if allName.CacheMillis < 30*1000 {
 		AllDoms.CacheSeconds = 30
 	} else {
 		AllDoms.CacheSeconds = allName.CacheMillis / 1000
@@ -178,7 +191,7 @@ func  (nacosClient *NacosClient) getAllDomNames() {
 	AllDoms.DLock.Unlock()
 }
 
-func (nacosClient * NacosClient) SetServers(servers []string) {
+func (nacosClient *NacosClient) SetServers(servers []string) {
 	nacosClient.serverManager.SetServers(servers)
 }
 
@@ -257,7 +270,7 @@ func NewNacosClient(servers []string, serverPort int) *NacosClient {
 
 	go vc.asyncUpdateDomain()
 
-	NacosClientLogger.Info("cache-path: " + CachePath )
+	NacosClientLogger.Info("cache-path: " + CachePath)
 	return &vc
 }
 
@@ -321,7 +334,7 @@ func (vc *NacosClient) getDomNow(domainName string, cache *ConcurrentMap, client
 
 	ip := vc.serverManager.NextServer()
 
-	s := Get("http://"+ip+":"+ strconv.Itoa(vc.serverPort) +"/nacos/v1/ns/api/srvIPXT?", params)
+	s := Get("http://"+ip+":"+strconv.Itoa(vc.serverPort)+"/nacos/v1/ns/api/srvIPXT?", params)
 
 	if s == "" {
 		NacosClientLogger.Warn("empty result from server, dom:" + domainName)

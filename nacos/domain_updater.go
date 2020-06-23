@@ -12,24 +12,28 @@
  */
 
 package nacos
+
 import (
 	"sync"
 )
 
-var domCache =  DomCache{}
+var domCache = DomCache{}
 var AllDoms AllDomsMap
 var indexMap = NewConcurrentMap()
 var serverManger = ServerManager{}
 
 type AllDomsMap struct {
-	Data map[string]bool
+	Data         map[string]bool
 	CacheSeconds int
-	DLock sync.RWMutex
+	DLock        sync.RWMutex
 }
 
 type AllDomNames struct {
-	Doms []string `json:"doms"`
-	CacheMillis int `json:"cacheMillis"`
+	Doms        []string `json:"doms"`
+	CacheMillis int      `json:"cacheMillis"`
 }
 
-
+type NewAllDomNames struct {
+	Doms        map[string][]string `json:"doms"`
+	CacheMillis int                 `json:"cacheMillis"`
+}
