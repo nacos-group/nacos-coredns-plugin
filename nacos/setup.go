@@ -60,13 +60,15 @@ func NacosParse(c *caddy.Controller) (*Nacos, error) {
 				case "nacos_server_port":
 					port, err := strconv.Atoi(c.RemainingArgs()[0])
 					if err != nil {
-						serverPort = port
+						return &Nacos{}, err
 					}
+					serverPort = port
 				case "cache_ttl":
 					ttl, err := strconv.Atoi(c.RemainingArgs()[0])
 					if err != nil {
-						DNSTTL = uint32(ttl)
+						return &Nacos{}, err
 					}
+					DNSTTL = uint32(ttl)
 				case "upstream":
 					args := c.RemainingArgs()
 					if len(args) == 0 {
