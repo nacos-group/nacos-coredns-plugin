@@ -14,14 +14,14 @@
 package nacos
 
 import (
-	"testing"
 	"net/http"
-	"strings"
 	"net/http/httptest"
+	"strings"
+	"testing"
 )
 
 func TestGet(t *testing.T) {
-	server := httptest.NewServer(http.HandlerFunc(func (w http.ResponseWriter, req *http.Request){
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 
 		if req.URL.EscapedPath() != "/nacos/v1/ns/api/srvIPXT" {
 			t.Errorf("Except to path '/person',got '%s'", req.URL.EscapedPath())
@@ -31,10 +31,10 @@ func TestGet(t *testing.T) {
 			w.Write([]byte("hello"))
 		}
 
-		}))
+	}))
 	defer server.Close()
 
-	s := Get(server.URL + "/nacos/v1/ns/api/srvIPXT", nil)
+	s := Get(server.URL+"/nacos/v1/ns/api/srvIPXT", nil)
 
 	if strings.Compare(s, "hello") == 0 {
 		t.Log("Success to test http client get")

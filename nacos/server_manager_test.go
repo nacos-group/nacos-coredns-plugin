@@ -14,9 +14,9 @@
 package nacos
 
 import (
-	"testing"
 	"os"
 	"strings"
+	"testing"
 )
 
 func TestServerManager_NextServer(t *testing.T) {

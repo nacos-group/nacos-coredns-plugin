@@ -14,14 +14,12 @@
 package nacos
 
 import (
-	"github.com/mholt/caddy"
-	"github.com/coredns/coredns/plugin"
-	"github.com/coredns/coredns/core/dnsserver"
 	"fmt"
-	"strings"
+	"github.com/caddyserver/caddy"
+	"github.com/coredns/coredns/core/dnsserver"
+	"github.com/coredns/coredns/plugin"
 	"strconv"
-	"github.com/coredns/coredns/plugin/pkg/parse"
-	"github.com/coredns/coredns/plugin/proxy"
+	"strings"
 )
 
 func init() {
@@ -53,10 +51,10 @@ func NacosParse(c *caddy.Controller) (*Nacos, error) {
 
 		if c.NextBlock() {
 			for {
-				switch v :=c.Val();v {
+				switch v := c.Val(); v {
 				case "nacos_server":
 					servers = strings.Split(c.RemainingArgs()[0], ",")
-					/* it is a noop now */
+					/* it is nacos_servera noop now */
 				case "nacos_server_port":
 					port, err := strconv.Atoi(c.RemainingArgs()[0])
 					if err != nil {
@@ -67,28 +65,6 @@ func NacosParse(c *caddy.Controller) (*Nacos, error) {
 					if err != nil {
 						DNSTTL = uint32(ttl)
 					}
-				case "upstream":
-					args := c.RemainingArgs()
-					if len(args) == 0 {
-						return &Nacos{}, c.ArgErr()
-					}
-					ups, err := parse.HostPortOrFile(args...)
-					if err != nil {
-						return &Nacos{}, err
-					}
-
-					var ups1 []string;
-
-					for _, host := range ups {
-						if strings.Contains(host, "127.0.0.1"){
-							continue
-						} else {
-							ups1 = append(ups1, host)
-							break
-						}
-					}
-					fmt.Println("upstreams: ", ups1)
-					nacosImpl.Proxy = proxy.NewLookup(ups1)
 				case "cache_dir":
 					CachePath = c.RemainingArgs()[0]
 				case "log_path":
@@ -105,7 +81,6 @@ func NacosParse(c *caddy.Controller) (*Nacos, error) {
 			}
 
 		}
-
 
 		client := NewNacosClient(servers, serverPort)
 		nacosImpl.NacosClientImpl = client

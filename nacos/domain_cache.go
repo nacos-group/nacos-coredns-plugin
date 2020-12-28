@@ -13,6 +13,5 @@
 
 package nacos
 
-
 type DomCache map[string]Domain
 type Servers []string

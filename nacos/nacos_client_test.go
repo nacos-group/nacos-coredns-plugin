@@ -14,20 +14,20 @@
 package nacos
 
 import (
-	"testing"
-	"strings"
-	"net/http/httptest"
 	"net/http"
+	"net/http/httptest"
 	"strconv"
+	"strings"
+	"testing"
 )
 
 func TestNacosClient_GetDomain(t *testing.T) {
 	s := `{"dom":"hello123","cacheMillis":10000,"useSpecifiedURL":false,"hosts":[{"valid":true,"marked":false,"metadata":{},"instanceId":"","port":81,"ip":"2.2.2.2","weight":1.0,"enabled":true}],"checksum":"c7befb32f3bb5b169f76efbb0e1f79eb1542236821437","lastRefTime":1542236821437,"env":"","clusters":""}`
-	server := httptest.NewServer(http.HandlerFunc(func (w http.ResponseWriter, req *http.Request){
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		if req.URL.EscapedPath() == "/nacos/v1/ns/api/srvIPXT" {
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte(s))
-		} else if req.URL.EscapedPath() == "/nacos/v1/ns/api/allDomNames"  {
+		} else if req.URL.EscapedPath() == "/nacos/v1/ns/api/allDomNames" {
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("{\"count\":1,\"doms\":[\"hello123\"]}"))
 		}

@@ -14,10 +14,10 @@
 package nacos
 
 import (
-	"testing"
 	"bytes"
 	"compress/gzip"
 	"strings"
+	"testing"
 )
 
 func TestTryDecompressData(t *testing.T) {

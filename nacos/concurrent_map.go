@@ -14,8 +14,8 @@
 package nacos
 
 import (
-"encoding/json"
-"sync"
+	"encoding/json"
+	"sync"
 )
 
 var SHARD_COUNT = 32
@@ -304,4 +304,3 @@ func fnv32(key string) uint32 {
 	}
 	return hash
 }
-

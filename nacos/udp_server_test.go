@@ -14,16 +14,16 @@
 package nacos
 
 import (
-	"testing"
 	"net"
-	"time"
 	"strings"
+	"testing"
+	"time"
 )
 
 func TestUDPServer_StartServer(t *testing.T) {
 	s := `{"dom":"hello123","cacheMillis":10000,"useSpecifiedURL":false,"hosts":[{"valid":true,"marked":false,"metadata":{},"instanceId":"","port":80,"ip":"2.2.2.2","weight":1.0,"enabled":true}],"checksum":"c7befb32f3bb5b169f76efbb0e1f79eb1542236821437","lastRefTime":1542236821437,"env":"","clusters":""}`
 	us := UDPServer{}
-	us.vipClient = &NacosClient{NewConcurrentMap(), UDPServer{}, ServerManager{}, 8848 }
+	us.vipClient = &NacosClient{NewConcurrentMap(), UDPServer{}, ServerManager{}, 8848}
 	go us.StartServer()
 
 	time.Sleep(100000)

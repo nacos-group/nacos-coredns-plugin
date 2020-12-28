@@ -19,11 +19,11 @@ import (
 )
 
 type DnsCache struct {
-	Msg *dns.Msg
+	Msg             *dns.Msg
 	LastUpdateMills int64
 }
 
 func (dnsCache *DnsCache) Updated() bool {
-	updated := (int)(time.Now().UnixNano() / 1000000 - dnsCache.LastUpdateMills) < (int)(DNSTTL * 1000)
+	updated := (int)(time.Now().UnixNano()/1000000-dnsCache.LastUpdateMills) < (int)(DNSTTL*1000)
 	return updated
 }

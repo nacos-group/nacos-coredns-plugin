@@ -16,13 +16,13 @@ package nacos
 import "encoding/json"
 
 type Instance struct {
-	IP string
-	Port int
-	Weight float64
-	Valid bool
-	Unit string
+	IP         string
+	Port       int
+	Weight     float64
+	Valid      bool
+	Unit       string
 	AppUseType string
-	Site string
+	Site       string
 }
 
 func (h Instance) String() string {

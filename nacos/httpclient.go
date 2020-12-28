@@ -14,12 +14,12 @@
 package nacos
 
 import (
-	"net/http"
-	"time"
-	"strings"
 	"io/ioutil"
-	"strconv"
+	"net/http"
 	"net/url"
+	"strconv"
+	"strings"
+	"time"
 )
 
 var httpClient = http.Client{
@@ -52,7 +52,7 @@ func Get(url string, params map[string]string) string {
 
 	url = encodeUrl(url, params)
 
-	req, err := http.NewRequest("GET",url, nil)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		NacosClientLogger.Error("failed to build request", err)
 		return ""
@@ -62,21 +62,20 @@ func Get(url string, params map[string]string) string {
 	response, err := httpClient.Do(req)
 
 	if err != nil || response.StatusCode != 200 {
-		NacosClientLogger.Error("error while request from " + url, err)
+		NacosClientLogger.Error("error while request from "+url, err)
 		if err != nil {
-			NacosClientLogger.Error("error while request from " + url, err)
+			NacosClientLogger.Error("error while request from "+url, err)
 		} else {
 			NacosClientLogger.Warn("error while request from " + url + ", code: " + strconv.Itoa(response.StatusCode))
 		}
 		return ""
 	}
 
-
 	b, err := ioutil.ReadAll(response.Body)
 	response.Body.Close()
 
 	if err != nil {
-		NacosClientLogger.Error("failed to get response body: " + url, err)
+		NacosClientLogger.Error("failed to get response body: "+url, err)
 		return ""
 	}
 

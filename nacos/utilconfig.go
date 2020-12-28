@@ -14,14 +14,14 @@
 package nacos
 
 import (
-	"strings"
-	"os"
 	"bytes"
-	"path/filepath"
-	"os/user"
-	"runtime"
-	"os/exec"
 	"errors"
+	"os"
+	"os/exec"
+	"os/user"
+	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 var DNSDomains = make(map[string]string)
@@ -76,7 +76,7 @@ func homeUnix() string {
 	return result
 }
 
-func homeWindows() string{
+func homeWindows() string {
 	drive := os.Getenv("HOMEDRIVE")
 	path := os.Getenv("HOMEPATH")
 	home := drive + path

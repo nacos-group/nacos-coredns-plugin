@@ -14,8 +14,8 @@
 package nacos
 
 import (
-	"testing"
 	"github.com/miekg/dns"
+	"testing"
 	"time"
 )
 

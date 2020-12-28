@@ -14,8 +14,8 @@
 package nacos
 
 import (
-	"testing"
 	"strings"
+	"testing"
 )
 
 func TestDomain_SrvInstances(t *testing.T) {

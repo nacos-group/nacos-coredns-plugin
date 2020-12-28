@@ -14,22 +14,21 @@
 package nacos
 
 import (
-	"math"
 	"encoding/json"
+	"math"
 )
 
 type Domain struct {
-	Name string `json:"dom"`
-	Clusters string
-	CacheMillis int64
+	Name          string `json:"dom"`
+	Clusters      string
+	CacheMillis   int64
 	LastRefMillis int64
-	Instances []Instance `json:"hosts"`
-	Env string
-	TTL int
-
+	Instances     []Instance `json:"hosts"`
+	Env           string
+	TTL           int
 }
 
-func (domain Domain) getInstances() ([]Instance) {
+func (domain Domain) getInstances() []Instance {
 	return domain.Instances
 }
 
@@ -49,7 +48,7 @@ func (domain Domain) SrvInstances() []Instance {
 		}
 	}
 
-	if len(result) <= 0{
+	if len(result) <= 0 {
 		panic("no host to srv: " + domain.Name)
 	}
 

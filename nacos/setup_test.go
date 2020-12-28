@@ -14,11 +14,11 @@
 package nacos
 
 import (
-	"testing"
-	"github.com/mholt/caddy"
-	"strings"
 	"fmt"
+	"github.com/caddyserver/caddy"
 	os "os"
+	"strings"
+	"testing"
 )
 
 func TestNacosParse(t *testing.T) {
@@ -43,9 +43,9 @@ func TestNacosParse(t *testing.T) {
 
 	for _, test := range tests {
 		c := caddy.NewTestController("dns", test.input)
-		nacosimpl, err :=NacosParse(c)
+		nacosimpl, err := NacosParse(c)
 		if err != nil {
-			t.Error("Failed to get instance.");
+			t.Error("Failed to get instance.")
 		} else {
 			var passed bool
 			fmt.Println(nacosimpl.NacosClientImpl.GetServerManager().GetServerList())
