@@ -21,7 +21,7 @@ type NacosGrpcClient struct {
 	SubscribeMap  AllDomsMap
 }
 
-func NewNacosGrpcClient(namespaceId string, serverHosts []string, vc *NacosClient) (*NacosGrpcClient, error) {
+func NewNacosGrpcClient(namespaceId string, serverHosts []string, vc *NacosClient, accessKey string, secretKey string) (*NacosGrpcClient, error) {
 	var nacosGrpcClient NacosGrpcClient
 	nacosGrpcClient.nacosClient = vc
 	if namespaceId == "public" {
@@ -53,7 +53,9 @@ func NewNacosGrpcClient(namespaceId string, serverHosts []string, vc *NacosClien
 		constant.WithUpdateCacheWhenEmpty(true),
 		constant.WithLogDir(LogPath),
 		constant.WithCacheDir(CachePath),
-		constant.WithLogLevel("debug"),
+		constant.WithLogLevel("info"),
+		constant.WithAccessKey(accessKey),
+		constant.WithSecretKey(secretKey),
 	)
 
 	var err error

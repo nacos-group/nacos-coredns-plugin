@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 # cd GOPATH
 cd $GOPATH/src/
-
+export PATH=$PATH:$GOROOT/bin
 # remove codes
 rm -rf coredns
-rm -rf nacos-coredns-plugin
 
 # clone current codes
-git clone https://github.com/nacos-group/nacos-coredns-plugin.git
 git clone https://github.com/coredns/coredns.git
-
 
 # cd coredns directory
 cd $GOPATH/src/coredns

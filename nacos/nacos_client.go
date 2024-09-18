@@ -229,7 +229,7 @@ func ProcessDomainString(s string) (model.Service, error) {
 	return service, nil
 }
 
-func NewNacosClient(namespaceId string, serverHosts []string) *NacosClient {
+func NewNacosClient(namespaceId string, serverHosts []string, accessKey string, secretKey string) *NacosClient {
 	fmt.Println("init nacos client.")
 	initLog()
 	vc := NacosClient{NewConcurrentMap(), UDPServer{}}
@@ -237,7 +237,7 @@ func NewNacosClient(namespaceId string, serverHosts []string) *NacosClient {
 	vc.udpServer.vipClient = &vc
 	//init grpcClient
 	var err error
-	GrpcClient, err = NewNacosGrpcClient(namespaceId, serverHosts, &vc)
+	GrpcClient, err = NewNacosGrpcClient(namespaceId, serverHosts, &vc, accessKey, secretKey)
 	if err != nil {
 		NacosClientLogger.Error("init nacos-grpc-client failed.", err)
 	}
